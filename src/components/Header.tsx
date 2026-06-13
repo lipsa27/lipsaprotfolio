@@ -17,6 +17,12 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +31,11 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Lock body scroll when mobile menu is open
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }, [isOpen]);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -47,13 +58,7 @@ export default function Header() {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-slate-950/70 dark:bg-slate-950/70 border-b border-slate-200/10 dark:border-slate-800/50 backdrop-blur-md py-4'
-          : 'bg-transparent py-6'
-      }`}
-    >
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${ mounted && scrolled ? 'bg-slate-950/70 dark:bg-slate-950/70 border-b border-slate-200/10 dark:border-slate-800/50 backdrop-blur-md py-4' : 'bg-transparent py-4 md:py-6' }`}>
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <a
@@ -91,13 +96,16 @@ export default function Header() {
 
           {/* Theme Toggler */}
           <button
-            suppressHydrationWarning
             id="theme-toggler"
             onClick={toggleTheme}
             className="p-2 rounded-lg border border-slate-200/10 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 hover:bg-slate-100/10 dark:hover:bg-slate-900/40 transition-all duration-200"
             aria-label="Toggle visual theme"
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {mounted ? (
+              theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />
+            ) : (
+              <div style={{ width: 18, height: 18 }} />
+            )}
           </button>
 
           {/* CTA */}
@@ -113,19 +121,21 @@ export default function Header() {
         </nav>
 
         {/* Mobile Nav Toggle */}
-        <div className="flex lg:hidden items-center gap-4">
+<div className={`flex lg:hidden items-center gap-4 z-60 ${isOpen ? 'hidden' : ''}`} >
           <button
-            suppressHydrationWarning
             id="theme-toggler-mobile"
             onClick={toggleTheme}
             className="p-2 rounded-lg border border-slate-200/10 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {mounted ? (
+              theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />
+            ) : (
+              <div style={{ width: 18, height: 18 }} />
+            )}
           </button>
 
           <button
-            suppressHydrationWarning
             id="mobile-menu-toggler"
             onClick={() => setIsOpen(!isOpen)}
             className="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400"
@@ -137,43 +147,49 @@ export default function Header() {
       </div>
 
       {/* Mobile Drawer */}
-      <div
-        className={`fixed inset-y-0 right-0 w-80 z-40 bg-slate-950/95 dark:bg-slate-950/95 border-l border-slate-800 backdrop-blur-xl p-8 transform transition-transform duration-300 ease-in-out lg:hidden ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex flex-col h-full justify-between">
-          <div className="mt-12 flex flex-col gap-6">
-            <h3 className="font-display text-xs font-semibold tracking-wider text-slate-500 uppercase">
-              Navigation
-            </h3>
-            <ul className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    className="text-lg font-bold text-slate-200 hover:text-cyan-400 transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="border-t border-slate-800 pt-6">
-            <a
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, '#contact')}
-              className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 font-semibold text-white tracking-wide shadow-lg shadow-cyan-500/20"
+      {isOpen && (
+        <div className="fixed inset-0 h-screen z-[120] bg-slate-950/95 dark:bg-slate-950/95 backdrop-blur-xl overflow-y-auto" onClick={() => setIsOpen(false)}>
+          <div className="relative p-8" onClick={e => e.stopPropagation()}>
+            <button
+              className="absolute top-4 right-4 p-2 rounded-lg text-slate-200 hover:text-cyan-400"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close menu"
             >
-              Let's Talk
-              <ArrowUpRight size={18} />
-            </a>
+              <X size={24} />
+            </button>
+            <div className="flex flex-col h-full justify-between">
+              <div className="mt-12 flex flex-col gap-6">
+                <h3 className="font-display text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                  Navigation
+                </h3>
+                <ul className="flex flex-col gap-4">
+                  {navLinks.map((link) => (
+                    <li key={link.name}>
+                      <a
+                        href={link.href}
+                        onClick={(e) => handleLinkClick(e, link.href)}
+                        className="text-lg font-bold text-slate-200 hover:text-cyan-400 transition-colors"
+                      >
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="border-t border-slate-800 pt-6">
+                <a
+                  href="#contact"
+                  onClick={(e) => handleLinkClick(e, '#contact')}
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 font-semibold text-white tracking-wide shadow-lg shadow-cyan-500/20"
+                >
+                  Let's Talk
+                  <ArrowUpRight size={18} />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }

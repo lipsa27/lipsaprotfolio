@@ -118,9 +118,9 @@ export default function ContactSection() {
                 <div className="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg">
                   <Mail size={16} />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <span className="text-[10px] text-slate-500 block uppercase font-bold mb-0.5">Email</span>
-                  <a href="mailto:faldulipsa27@gmail.com" className="hover:text-cyan-400 transition-colors">
+                  <a href="mailto:faldulipsa27@gmail.com" className="hover:text-cyan-400 transition-colors break-all">
                     faldulipsa27@gmail.com
                   </a>
                 </div>
@@ -130,12 +130,12 @@ export default function ContactSection() {
                 <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg">
                   <LinkedinIcon size={16} />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <span className="text-[10px] text-slate-500 block uppercase font-bold mb-0.5">LinkedIn</span>
-                  <a href="https://in.linkedin.com/in/lipsa-faldu-b46521208" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
+                  <a href="https://in.linkedin.com/in/lipsa-faldu-b46521208" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors flex items-center gap-1 flex-wrap break-all">
                     https://in.linkedin.com/in/lipsa-faldu-b46521208
 
-                    <ArrowUpRight size={12} />
+                    <ArrowUpRight size={12} className="flex-shrink-0" />
                   </a>
                 </div>
               </div>
@@ -177,6 +177,7 @@ export default function ContactSection() {
                   Email Address
                 </label>
                 <input
+                  suppressHydrationWarning
                   type="email"
                   id="email"
                   name="email"

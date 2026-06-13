@@ -79,8 +79,8 @@ export default function DesignSystemSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Navigation Tabs (Col span 3) */}
-          <div className="lg:col-span-3 flex flex-col gap-2.5">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2 pl-3">
+          <div className="lg:col-span-3 flex flex-row lg:flex-col flex-wrap gap-2.5">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2 pl-3 w-full hidden lg:block">
               Design Categories
             </h3>
             {[
@@ -96,7 +96,7 @@ export default function DesignSystemSection() {
                   key={tab.id}
                   id={`ds-tab-${tab.id}`}
                   onClick={() => setActivePlaygroundTab(tab.id as any)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-left text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  className={`flex-1 min-w-[140px] lg:w-full flex items-center justify-center lg:justify-start gap-3 px-4 py-3 rounded-xl border text-center lg:text-left text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     isActive
                       ? 'bg-slate-900 border-cyan-500/30 text-cyan-400 shadow-md shadow-cyan-950/20'
                       : 'bg-transparent border-transparent text-slate-500 hover:text-slate-300 hover:bg-slate-900/30'

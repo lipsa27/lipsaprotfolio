@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, User, Briefcase, Zap, Target, ArrowRight } from 'lucide-react';
-import { and } from 'three/tsl';
+
 
 const milestones = [
   {
@@ -125,61 +125,63 @@ export default function AboutSection() {
           <div className="lg:col-span-7 flex flex-col space-y-10">
 
             {/* Timeline Progress Bar Wrapper */}
-            <div className="relative pt-6">
-              {/* Main Line */}
-              <div className="absolute top-[38px] left-0 right-0 h-[2px] bg-slate-800" />
+            <div className="relative pt-6 overflow-x-auto pb-4">
+              <div className="min-w-0 w-full sm:min-w-0 relative">
+                {/* Main Line */}
+                <div className="absolute top-[38px] left-0 right-0 h-[2px] bg-slate-800" />
 
-              {/* Active Segment Fill */}
-              <div
-                className="absolute top-[38px] left-0 h-[2px] bg-gradient-to-r from-cyan-500 to-indigo-500 transition-all duration-500"
-                style={{
-                  width: `${(activeIndex / (milestones.length - 1)) * 100}%`,
-                }}
-              />
+                {/* Active Segment Fill */}
+                <div
+                  className="absolute top-[38px] left-0 h-[2px] bg-gradient-to-r from-cyan-500 to-indigo-500 transition-all duration-500"
+                  style={{
+                    width: `${(activeIndex / (milestones.length - 1)) * 100}%`,
+                  }}
+                />
 
-              {/* Milestones Nodes */}
-              <div className="relative flex justify-between items-center z-10">
-                {milestones.map((milestone, idx) => {
-                  const Icon = milestone.icon;
-                  const isActive = idx === activeIndex;
-                  const isPast = idx < activeIndex;
+                {/* Milestones Nodes */}
+                <div className="relative flex flex-col sm:flex-row justify-between items-center z-10">
+                  {milestones.map((milestone, idx) => {
+                    const Icon = milestone.icon;
+                    const isActive = idx === activeIndex;
+                    const isPast = idx < activeIndex;
 
-                  return (
-                    <button
-                      key={milestone.year}
-                      onClick={() => setActiveIndex(idx)}
-                      className="flex flex-col items-center group focus:outline-none"
-                    >
-                      <span
-                        className={`text-xs font-bold tracking-wider font-mono mb-3 transition-colors ${isActive
-                          ? 'text-cyan-400'
-                          : 'text-slate-500 group-hover:text-slate-300'
-                          }`}
-                      >
-                        {milestone.year}
-                      </span>
-                      <span
-                        className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${isActive
-                          ? 'bg-slate-950 border-cyan-400 scale-110 shadow shadow-cyan-400/50'
-                          : isPast
-                            ? 'bg-cyan-500 border-cyan-500'
-                            : 'bg-slate-900 border-slate-700 group-hover:border-slate-500'
-                          }`}
+                    return (
+                      <button
+                        key={milestone.year}
+                        onClick={() => setActiveIndex(idx)}
+                        className="flex flex-col items-center group focus:outline-none px-2"
                       >
                         <span
-                          className={`w-1.5 h-1.5 rounded-full transition-colors ${isActive ? 'bg-cyan-400' : isPast ? 'bg-white' : 'bg-transparent'
+                          className={`text-xs font-bold tracking-wider font-mono mb-3 transition-colors ${isActive
+                            ? 'text-cyan-400'
+                            : 'text-slate-500 group-hover:text-slate-300'
                             }`}
-                        />
-                      </span>
-                      <span
-                        className={`text-[10px] mt-2 font-semibold tracking-wide uppercase transition-colors hidden sm:block ${isActive ? 'text-slate-200' : 'text-slate-500 group-hover:text-slate-400'
-                          }`}
-                      >
-                        {milestone.year === '2026' ? 'Now' : milestone.year === '2023' ? 'Internship' : 'JOb'}
-                      </span>
-                    </button>
-                  );
-                })}
+                        >
+                          {milestone.year}
+                        </span>
+                        <span
+                          className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${isActive
+                            ? 'bg-slate-950 border-cyan-400 scale-110 shadow shadow-cyan-400/50'
+                            : isPast
+                              ? 'bg-cyan-500 border-cyan-500'
+                              : 'bg-slate-900 border-slate-700 group-hover:border-slate-500'
+                            }`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full transition-colors ${isActive ? 'bg-cyan-400' : isPast ? 'bg-white' : 'bg-transparent'
+                              }`}
+                          />
+                        </span>
+                        <span
+                          className={`text-[10px] mt-2 font-semibold tracking-wide uppercase transition-colors hidden sm:block ${isActive ? 'text-slate-200' : 'text-slate-500 group-hover:text-slate-400'
+                            }`}
+                        >
+                          {milestone.year === '2025-Present' ? 'MavenVista' : milestone.year === '2023' ? 'Internship' : 'Job'}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
@@ -194,8 +196,8 @@ export default function AboutSection() {
                   transition={{ duration: 0.3 }}
                   className="glass-panel p-6 sm:p-8 rounded-3xl"
                 >
-                  <div className="flex items-center justify-between gap-4 mb-4">
-                    <div className="flex items-center gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
                       <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
                         <ActiveIcon size={18} />
                       </div>
@@ -208,7 +210,7 @@ export default function AboutSection() {
                         </p>
                       </div>
                     </div>
-                    <span className="text-2xl font-black font-display text-slate-800 dark:text-slate-800/60 leading-none select-none">
+                    <span className="text-xl sm:text-2xl font-black font-display text-slate-800 dark:text-slate-800/60 leading-none select-none self-start sm:self-auto">
                       {activeMilestone.year}
                     </span>
                   </div>

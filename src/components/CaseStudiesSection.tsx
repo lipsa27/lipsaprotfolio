@@ -33,7 +33,7 @@ export default function CaseStudiesSection() {
           </div>
 
           {/* Tab switcher */}
-          <div className="inline-flex p-1.5 rounded-full bg-slate-900 border border-slate-800">
+          <div className="inline-flex flex-wrap gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 w-fit">
             {([
               { key: 'mobile', label: 'Mobile Apps' },
               { key: 'web_graphics', label: 'Web & Graphics' },
@@ -42,7 +42,7 @@ export default function CaseStudiesSection() {
                 key={key}
                 id={`case-tab-${key}`}
                 onClick={() => setActiveTab(key)}
-                className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                   activeTab === key
                     ? 'bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md'
                     : 'text-slate-400 hover:text-slate-200'
